@@ -22,7 +22,7 @@ export default async function CartPage() {
                     </h1>
                     
                     <p className="text-lg text-gray-700 mb-2">
-                        Only users with member role can view their cart.
+                        Only users with member role can view their orders.
                     </p>
                     
                 </div>
