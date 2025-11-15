@@ -1,6 +1,6 @@
 import ItemsCart from "@/components/ItemsCart";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/libs/authOptions";
 import { dbConnect } from "@/db/dbConnect";
 import Order from "@/db/models/Order";
 import { redirect } from "next/navigation";

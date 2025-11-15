@@ -3,7 +3,7 @@ import { dbConnect } from "@/db/dbConnect";
 import Order from "@/db/models/Order";
 import { CartItem } from "@/redux/features/cartSlice"; 
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/libs/authOptions";
 import { revalidatePath } from "next/cache";
 
 export async function createOrders(toyItems: CartItem[]) {

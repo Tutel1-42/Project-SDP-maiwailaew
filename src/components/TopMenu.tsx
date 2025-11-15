@@ -2,7 +2,7 @@ import styles from './topmenu.module.css'
 import Image from 'next/image';
 import TopMenuItem from './TopMenuItem';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/libs/authOptions';
 import Link from 'next/link';
 import { unstable_noStore as noStore } from 'next/cache';
 

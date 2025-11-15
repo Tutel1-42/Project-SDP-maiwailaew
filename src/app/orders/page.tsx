@@ -1,7 +1,7 @@
 import OrderForm from "./OrderForm"; 
 import getToys from "@/libs/getToys";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"; 
+import { authOptions } from "@/libs/authOptions";
 import { getPastOrderedToyIds } from "@/libs/getPastOrders"; 
 import { redirect } from "next/navigation";
 
