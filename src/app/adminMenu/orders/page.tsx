@@ -1,8 +1,8 @@
 import { dbConnect } from "@/db/dbConnect"
 import Order from "@/db/models/Order"
 import User from "@/db/models/User"
-import Toy from "@/db/models/Toy" // Import เพื่อให้ Mongoose รู้จัก Schema
-import ItemsCart from "@/components/ItemsCart" // 1. เรียกใช้ Component ตัวเก่งของเรา
+import Toy from "@/db/models/Toy" 
+import ItemsCart from "@/components/ItemsCart" 
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 import { redirect } from "next/navigation"

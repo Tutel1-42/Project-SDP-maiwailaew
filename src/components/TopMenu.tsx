@@ -19,10 +19,10 @@ export default async function TopMenu() {
             <TopMenuItem title='Catalogue' pageRef='/toys'/>
 
             {/*  order page */}
-            <TopMenuItem title='Orders' pageRef='/orders'/>
+            <TopMenuItem title='Order Toy' pageRef='/orders'/>
 
             {/* cart page */}
-            <TopMenuItem title='Cart' pageRef='/cart'/>
+            <TopMenuItem title='My Orders' pageRef='/my-orders'/>
 
             {/* for admin */}
             <TopMenuItem title='Admin Menu' pageRef='/adminMenu'/>

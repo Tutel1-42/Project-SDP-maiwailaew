@@ -21,7 +21,7 @@ export default async function ToyCatalog({toyJson} : ToyCatalogProps) {
                             md:w-[30%] lg:w-[25%] p-2 sm:p-4 md:p-4 lg:p-8">
                                 
                                 <Link href ={`/toys/${toyItem._id}`}>
-                                    <ToyCard toyName={toyItem.name} imgSrc={toyItem.posterPicture}/>
+                                    <ToyCard toy={toyItem}/>
                                 </Link>
 
                             </div>

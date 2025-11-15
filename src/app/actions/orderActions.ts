@@ -91,8 +91,7 @@ export async function createSingleOrder(artToyId: string, amount: number) {
             orderAmount: amount
         });
     } catch (error) {
-        console.error("❗️ FAILED TO CREATE ORDER (DB Error):", error);
-        throw new Error("Could not save order to database. Check server logs.");
+        throw new Error("Could not save order to database.");
     }
 
     revalidatePath("/orders"); 

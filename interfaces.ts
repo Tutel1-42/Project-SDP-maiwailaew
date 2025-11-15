@@ -36,3 +36,10 @@ export interface OrderFormProps {
     allToys: ArtToyType[];
     pastOrderedToyIds: string[]; 
 }
+
+export interface WishlistContextType {
+    wishlist: string[]; 
+    addToWishlist: (toyId: string) => void;
+    removeFromWishlist: (toyId: string) => void;
+    isWishlisted: (toyId: string) => boolean;
+}

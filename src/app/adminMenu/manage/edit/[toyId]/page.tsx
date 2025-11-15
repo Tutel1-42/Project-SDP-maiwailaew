@@ -40,7 +40,7 @@ export default async function EditToyPage({ params }: { params: { toyId: string 
 
     // formสำหรับใส่input
     return (
-        <main className="bg-slate-100 p-5">
+        <main className="bg-slate-100 min-h-screen p-5">
             <h1 className="text-xl text-blue-700">Edit Toy: {toy.name}</h1>
             
             <form action={updateToy}>
@@ -65,13 +65,13 @@ export default async function EditToyPage({ params }: { params: { toyId: string 
                            className="bg-white border-2 rounded w-full p-2" />
                 </div>
                 <div className="my-2">
-                    <label>Arrival Date</label>
+                    <label>Arrival Date  </label>
                     <input type="date" name="arrivalDate" 
                            defaultValue={new Date(toy.arrivalDate).toISOString().split("T")[0]}
                            className="bg-white border-2 rounded w-auto p-2" />
                 </div>
                 <div className="my-2">
-                    <label>Available Quota</label>
+                    <label>Available Quota  </label>
                     <input type="number" name="availableQuota" defaultValue={toy.availableQuota}
                            min={1} max={100}
                            className="bg-white border-2 rounded w-auto p-2" />

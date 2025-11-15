@@ -1,24 +1,16 @@
 "use client"
-// 1. ลบ Imports ของ Redux (useDispatch, useSelector, cartSlice)
-// 2. ลบ Imports ที่ไม่ใช้แล้ว (createOrders, useRouter)
 import { updateOrderAmount, deleteOrder } from "@/app/actions/orderActions"; 
 import { useState, useTransition } from "react";
 import { useSession } from "next-auth/react";
-import { OrderItem } from "../../interfaces"; // Import Type จากส่วนกลาง
+import { OrderItem } from "../../interfaces"; 
 
 export default function ItemsCart({ orders = [] }: { orders: OrderItem[] }) {
     
     const { data: session } = useSession();
     const isAdmin = session?.user?.role === 'admin';
-    // 3. ลบ State และ Hooks ที่เกี่ยวกับ Redux ทั้งหมด
-    // (cartItems, dispatch, router, isConfirming)
 
-    // 4. คงเหลือไว้เฉพาะ State สำหรับ Server Actions (DB)
     const [isPending, startTransition] = useTransition();
 
-    // 5. ลบ handleConfirmOrder() ทิ้ง (เพราะย้ายไป OrderForm แล้ว)
-
-    // 6. คง Handlers สำหรับ DB ไว้
     const handleUpdateDB = (orderId: string, amount: number) => {
         if (amount < 1 || amount > 5) return;
         startTransition(async () => {
@@ -34,14 +26,7 @@ export default function ItemsCart({ orders = [] }: { orders: OrderItem[] }) {
     };
 
     return (
-        // 7. ลบ div ครอบตัวแรกที่มี space-y-10 ออก
         <div>
-            
-            {/* 8. ❌❌ ลบ SECTION 1 (Redux Cart) ทั้งหมด ❌❌ */}
-            {/* { !isAdmin && ( ... )} */}
-
-
-            {/* 9. ✅✅ เหลือแค่ SECTION 2 (Database List) ✅✅ */}
             <div>
                 <h2 className="text-2xl font-bold mb-4 text-indigo-800">
                     {isAdmin ? "Existing Customer Orders" : "My Pre-Orders"}
