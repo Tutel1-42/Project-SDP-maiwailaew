@@ -1,6 +1,6 @@
 "use client"
 import { updateOrderAmount, deleteOrder } from "@/app/actions/orderActions"; 
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { useSession } from "next-auth/react";
 import { OrderItem } from "../../interfaces"; 
 

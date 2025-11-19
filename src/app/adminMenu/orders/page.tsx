@@ -1,7 +1,3 @@
-import { dbConnect } from "@/db/dbConnect"
-import Order from "@/db/models/Order"
-import User from "@/db/models/User"
-import Toy from "@/db/models/Toy" 
 import ItemsCart from "@/components/ItemsCart" 
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/libs/authOptions"
@@ -9,27 +5,25 @@ import { redirect } from "next/navigation"
 
 export default async function ManageOrdersPage() {
 
-    // check if admin
     const session = await getServerSession(authOptions);
     if (!session || session.user.role !== 'admin') {
         redirect("/");
     }
 
-    await dbConnect();
-    
-    // Fetch ข้อมูลของทุกคน
-    const orders = await Order.find()
-        .sort({ createdAt: -1 }) // เรียงจากใหม่ไปเก่า
-        .populate({
-            path: 'user',
-            model: User,
-            select: 'name email' 
-        })
-        .populate({ 
-            path: 'artToy',
-            model: Toy,
-            select: 'name picture' 
-        });
+    const ordersResponse = await fetch(`${process.env.API_URL}/api/v1/orders`, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${session.user.token}` 
+        },
+        cache: "no-store" 
+    });
+
+    if (!ordersResponse.ok) {
+        return <div className="p-5 text-red-500">Failed to fetch orders</div>;
+    }
+
+    const ordersJson = await ordersResponse.json();
+    const orders = ordersJson.data; 
 
     return (
         <main className="p-5 min-h-screen bg-slate-100">
@@ -43,7 +37,7 @@ export default async function ManageOrdersPage() {
             {orders.length === 0 ? (
                 <div className="text-center text-gray-500 mt-10">No orders found.</div>
             ) : (
-                <ItemsCart orders={JSON.parse(JSON.stringify(orders))} />
+                <ItemsCart orders={orders} />
             )}
         </main>
     );

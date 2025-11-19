@@ -1,41 +1,38 @@
 import { AuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
-import { dbConnect } from "@/db/dbConnect"
-import User from "@/db/models/User"
-import bcrypt from "bcryptjs" 
 
 export const authOptions: AuthOptions = {
     providers: [
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-                email: { label: "Email", type: "email", placeholder: "test@test.com" },
+                email: { label: "Email", type: "email" },
                 password: { label: "Password", type: "password" }
             },
-            
             async authorize(credentials, req) {
                 if (!credentials) return null;
-                await dbConnect();
 
-                const user = await User.findOne({ email: credentials.email }).select('+password');
+                const response = await fetch(`${process.env.API_URL}/api/v1/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: credentials.email,
+                        password: credentials.password
+                    })
+                });
 
-                if (!user) {
-                    return null;
-                }
+                const data = await response.json();
 
-                // compare password
-                const isPasswordMatch = await bcrypt.compare(credentials.password, user.password);
-
-                if (isPasswordMatch) {
-                    // Passwords match
-                    return { 
-                        id: user._id.toString(),
-                        email: user.email, 
-                        name: user.name,
-                        role: user.role
+                if (response.ok && data.success) {
+                    return {
+                        id: data._id,      
+                        name: data.name,
+                        email: data.email,
+                        role: data.role, 
+                        token: data.token  
                     };
                 } else {
-                    return null;
+                    return null; 
                 }
             }
         })
@@ -46,6 +43,7 @@ export const authOptions: AuthOptions = {
             if (user) {
                 token.id = user.id;
                 token.role = user.role;
+                token.accessToken = (user as any).token; 
             }
             return token;
         },
@@ -53,6 +51,7 @@ export const authOptions: AuthOptions = {
             if (session.user) {
                 session.user._id = token.id as string;
                 session.user.role = token.role as string;
+                session.user.token = token.accessToken as string;
             }
             return session;
         }

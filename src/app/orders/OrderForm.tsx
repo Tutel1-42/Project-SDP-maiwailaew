@@ -2,11 +2,19 @@
 import { useSession } from "next-auth/react";
 import { useState } from "react"; 
 import { TextField } from "@mui/material"; 
-import { OrderFormProps } from "../../../interfaces"; 
+// ตรวจสอบ Path ให้ถูกต้องตามโครงสร้างโปรเจกต์ของคุณ
+import { ArtToyType } from "../../../interfaces"; 
 import { createSingleOrder } from "@/app/actions/orderActions";
 import { useRouter } from "next/navigation";
 
+interface OrderFormProps {
+    allToys: ArtToyType[];
+    pastOrderedToyIds: string[];
+}
+
 export default function OrderForm ({ allToys, pastOrderedToyIds }: OrderFormProps) { 
+    
+    // 1. ย้าย Hooks เข้ามาข้างใน Component (สำคัญ!)
     const { data: session } = useSession(); 
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false); 
@@ -17,6 +25,7 @@ export default function OrderForm ({ allToys, pastOrderedToyIds }: OrderFormProp
     const makeOrder = async () => { 
         setIsLoading(true);
 
+        // --- Validation ---
         if (!amountInput || amountInput <= 0 || amountInput > 5) {
              alert("Quantity must be between 1 and 5");
              setIsLoading(false); 
@@ -28,6 +37,7 @@ export default function OrderForm ({ allToys, pastOrderedToyIds }: OrderFormProp
             return; 
         }
 
+        // --- Find Toy ---
         const foundToy = allToys.find(toy => 
             toy.name.toLowerCase() === toyNameInput.trim().toLowerCase() 
         ); 
@@ -45,6 +55,7 @@ export default function OrderForm ({ allToys, pastOrderedToyIds }: OrderFormProp
                 alert(`Pre-order ${foundToy.name} successful!`);
                 router.refresh(); 
                 setToyNameInput("");
+                
             } catch (error: any) {
                 console.error(error);
                 alert(`Failed to pre-order: ${error.message}`); 
@@ -52,6 +63,7 @@ export default function OrderForm ({ allToys, pastOrderedToyIds }: OrderFormProp
         } else { 
             alert("There isn't any toy with this name"); 
         } 
+        
         setIsLoading(false);
     } 
 

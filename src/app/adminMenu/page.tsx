@@ -32,7 +32,6 @@ export default async function DashboardPage() {
     }
 
     const createdAt = new Date(userProfile.createdAt);
-    const todayString = new Date().toISOString().split("T")[0];
 
     return (
         <main className="bg-slate-100 pl-5 min-h-screen">
@@ -44,9 +43,7 @@ export default async function DashboardPage() {
                 <tr><td className="font-semibold">Member Since</td><td>{createdAt.toLocaleDateString()}</td></tr>
             </tbody></table>
 
-            {
-                (userProfile.role == "admin") ?
-                <> 
+
                     <div className="my-6">
                         <h2 className="text-xl text-blue-700 mb-2 font-bold">Admin Actions</h2>
                         <div className="flex space-x-4">
@@ -65,9 +62,6 @@ export default async function DashboardPage() {
 
                         </div>
                     </div>
-                </>
-                : null
-            }
         </main>
     )
 }

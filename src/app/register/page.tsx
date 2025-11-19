@@ -1,7 +1,4 @@
-import { dbConnect } from "@/db/dbConnect"
-import User from "@/db/models/User" 
-import { redirect } from "next/navigation"
-import bcrypt from "bcryptjs" //hash password
+import { redirect } from "next/navigation";
 
 export default function RegisterPage() {
 
@@ -20,28 +17,29 @@ export default function RegisterPage() {
         }
 
         try {
-            await dbConnect();
-
-            const existingUser = await User.findOne({ email: email });
-            if (existingUser) {
-                console.error("User with this email already exists.");
-                return redirect('/register?error=User+already+exists');
-            }
-
-            const hashedPassword = await bcrypt.hash(password, 10); 
-
-            await User.create({
-                name,
-                email,
-                tel,
-                role,
-                password: hashedPassword 
+            const response = await fetch(`${process.env.API_URL}/api/v1/auth/register`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name,
+                    email,
+                    tel,
+                    role,
+                    password
+                })
             });
+
+            if (!response.ok) {
+                console.error("Registration failed");
+                return; 
+            }
 
         } catch (error) {
             console.log(error);
+            return;
         }
-
         redirect("/api/auth/signin");
     }
 
