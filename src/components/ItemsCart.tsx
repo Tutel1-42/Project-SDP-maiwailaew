@@ -3,18 +3,20 @@ import { updateOrderAmount, deleteOrder } from "@/app/actions/orderActions";
 import { useTransition } from "react";
 import { useSession } from "next-auth/react";
 import { OrderItem } from "../../interfaces"; 
+import { useRouter } from "next/navigation";
 
 export default function ItemsCart({ orders = [] }: { orders: OrderItem[] }) {
     
     const { data: session } = useSession();
     const isAdmin = session?.user?.role === 'admin';
-
+    const router = useRouter();
     const [isPending, startTransition] = useTransition();
 
     const handleUpdateDB = (orderId: string, amount: number) => {
         if (amount < 1 || amount > 5) return;
         startTransition(async () => {
             await updateOrderAmount(orderId, amount);
+            router.refresh();
         });
     };
 
@@ -22,6 +24,7 @@ export default function ItemsCart({ orders = [] }: { orders: OrderItem[] }) {
         if(!confirm("Are you sure you want to cancel this order?")) return;
         startTransition(async () => {
             await deleteOrder(orderId);
+            router.refresh();
         });
     };
 

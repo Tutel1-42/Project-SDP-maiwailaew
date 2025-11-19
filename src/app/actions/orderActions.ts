@@ -1,7 +1,7 @@
 "use server"
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/libs/authOptions";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 //Update Order 
 export async function updateOrderAmount(orderId: string, newAmount: number) {
@@ -33,7 +33,7 @@ export async function updateOrderAmount(orderId: string, newAmount: number) {
 
     revalidatePath("/cart"); 
     revalidatePath("/adminMenu/orders");
-    revalidatePath("/toys"); 
+    revalidateTag("toys"); 
 }
 
 // Delete Order
@@ -62,7 +62,7 @@ export async function deleteOrder(orderId: string) {
 
     revalidatePath("/cart");
     revalidatePath("/adminMenu/orders");
-    revalidatePath("/toys"); 
+    revalidateTag("toys"); 
 }
 
 // 3. Create Order
@@ -102,5 +102,5 @@ export async function createSingleOrder(artToyId: string, amount: number) {
 
     revalidatePath("/orders"); 
     revalidatePath("/cart");   
-    revalidatePath("/toys"); 
+    revalidateTag("toys"); 
 } 
