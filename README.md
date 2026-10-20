@@ -4,7 +4,9 @@
 
 A web application for pre-ordering collectible **Art Toys**. Members can browse the catalogue of upcoming toys, reserve the ones they want before they arrive, and manage their pre-orders, while admins manage the toy catalogue and oversee every order.
 
-🔗 **Live demo:** [Vercel deployment](https://project-sdp-maiwailaew-7s4yayzya-tute1-42s-projects.vercel.app/)
+> 🎓 **Course project (2024)** – built as coursework with a focus on **frontend development**.
+>
+> ⚠️ **Project status:** The backend API this frontend depends on is **no longer operational**. The frontend code is preserved here for reference and portfolio purposes, but the deployed demo can no longer sign in, load the catalogue or place orders. See [Project Status](#-project-status) for details.
 
 ---
 
@@ -42,7 +44,7 @@ A web application for pre-ordering collectible **Art Toys**. Members can browse 
 - **Styling / UI:** Tailwind CSS, Material UI (MUI), CSS Modules
 - **Authentication:** NextAuth.js (Credentials provider, JWT sessions)
 - **State management:** Redux Toolkit, Redux Persist, React Context (wishlist)
-- **Database:** MongoDB with Mongoose
+- **Data models:** Mongoose schemas (User, Toy, Order)
 - **Other libraries:** bcryptjs, dayjs, react-datepicker, MUI X Date Pickers
 - **Deployment:** Vercel
 
@@ -79,12 +81,34 @@ interfaces.ts                 # Shared TypeScript interfaces
 
 ---
 
-## 🚀 Getting Started
+## 📌 Project Status
+
+The frontend was developed to work with a separate REST backend that was provided and hosted for the course. That backend has since been shut down, so:
+
+- The **Vercel demo** no longer works end to end (no login, catalogue data or orders).
+- The app **cannot run fully out of the box** from this repository alone.
+
+The frontend still documents the API it expects, which makes it possible to revive the project by building a compatible backend or mocking one:
+
+| Endpoint | Used for |
+| --- | --- |
+| `POST /api/v1/auth/register` | Sign-up |
+| `POST /api/v1/auth/login` | Sign-in (returns user info, role and JWT token) |
+| `GET / POST /api/v1/arttoys` | List and create toys |
+| `GET / PUT / DELETE /api/v1/arttoys/:id` | View, update and delete a toy |
+| `GET / POST /api/v1/orders` | List and create orders |
+| `PUT / DELETE /api/v1/orders/:id` | Update and cancel an order |
+
+Authenticated requests send the token as `Authorization: Bearer <token>`.
+
+---
+
+## 🚀 Running the Frontend Locally
 
 ### Prerequisites
 - Node.js 18+
-- A MongoDB database
-- The backend REST API (this frontend calls `/api/v1/auth`, `/api/v1/arttoys` and `/api/v1/orders`)
+- A backend that implements the endpoints above (or a mock server)
+- A MongoDB database (the admin dashboard reads user data directly through Mongoose)
 
 ### Installation
 
@@ -99,7 +123,7 @@ npm install
 Create a `.env.local` file in the project root:
 
 ```env
-API_URL=http://localhost:5000        # Base URL of the backend API
+API_URL=http://localhost:5000        # Base URL of your backend / mock API
 MONGO_URI=your_mongodb_connection_string
 NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=your_random_secret
@@ -120,9 +144,3 @@ npm run build   # Build for production
 npm run start   # Start the production server
 npm run lint    # Run ESLint
 ```
-
----
-
-## ☁️ Deployment
-
-The project is deployed on [Vercel](https://vercel.com/). Remember to set the environment variables above in the Vercel project settings.
